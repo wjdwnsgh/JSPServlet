@@ -2,11 +2,37 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
   <display-name>K08JSPServlet</display-name>
   
+  
   <!-- 해당 프로젝트(웹애플리케이션) 전체에서 사용할 수 있는 컨텍스트 초기화 파라미터 -->
   <context-param>
   	<param-name>INIT_PARAM</param-name>
   	<param-value>web.xml에 저장한 초기화 매개변수</param-value>
   </context-param>
+  
+  <!-- 웹 애플리케이션에서 에러(예외) 발생시 처리할 페이지를 지정한다. -->
+  <!-- 
+  	404 : Not found. 페이지를 찾을 수 없을때 발생
+  	405 : Method not Allowed. get/post방식으로 전송시 해당 요청을 처리할
+  		컨트롤러(메서드)가 없을때 발생
+  	500 : Internal server error. 서버 내부 오류로 코드에 오타가 있거나
+  		로직에 문제가 있어 웹 서버가 요청을 처리할 수 없을때 발생
+  		
+  	※ 에러페이지 처리는 실 서비스에서는 반드시 필요한 부분이지만
+  	개발시에는 에러를 확인한 후 디버깅하면서 진행해야 하므로
+  	개발이 완료될때까지는 주석으로 처리해 두는 것이 좋다.
+   -->
+  <!-- <error-page>
+  	<error-code>404</error-code>
+  	<location>/02ImplicitObject/Exception.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>405</error-code>
+  	<location>/02ImplicitObject/Exception.jsp</location>
+  </error-page>
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/02ImplicitObject/Exception.jsp</location>
+  </error-page> -->
   
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
