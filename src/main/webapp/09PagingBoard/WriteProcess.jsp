@@ -21,16 +21,16 @@
 	
 	/* 기존에 1개씩 입력하는 방식 */
 	// dto객체를 매개변수로 전달하여 레코드 insert 처리
-	int iResult = dao.insertWrite(dto);
+	//int iResult = dao.insertWrite(dto);
 	
 	/* 더미데이터 100개를 한꺼번에 입력하기 */
-	/*
+	
 	int iResult = 0;
 	for(int i =1; i<=100; i++) {
 		dto.setTitle(title +"-"+ i);
 		iResult = dao.insertWrite(dto);
 	}
-	*/
+	
 	
 	//자원 해제
 	dao.close();
