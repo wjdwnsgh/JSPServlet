@@ -1,5 +1,7 @@
 package membership;
 
+import javax.servlet.ServletContext;
+
 import common.JDBConnect;
 /*
 DAO(Data Access Object) : 실제 데이터베이스에 접근하여
@@ -44,5 +46,10 @@ public class MemberDAO extends JDBConnect{
 		}
 		
 		return dto;
+	}
+	
+	// application 내장객체만
+	public MemberDAO(ServletContext application) {
+		super(application);
 	}
 }
