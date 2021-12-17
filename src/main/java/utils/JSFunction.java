@@ -12,7 +12,7 @@ public class JSFunction {
 	 	아래는 서블릿에서 함수를 실행하기 위해 작성되므로 out내장객체 대신
 	 	response내장객체를 추가하면 된다.
 	*/
-	public static void alertLodcation(HttpServletResponse resp, String msg, String url) {
+	public static void alertLocation(HttpServletResponse resp, String msg, String url) {
 		/*
 		 Java클래스에서는 JSP의 내장객체를 사용할 수 없으므로 반드시
 		 매개변수로 전달받은 뒤 사용해야한다.
@@ -37,7 +37,7 @@ public class JSFunction {
 	
 	}
 	// JS를 통해 경고창을 띄우고 뒤로 이동한다.
-	public static void alertBack(HttpServletResponse resp, String msg, JspWriter out) {
+	public static void alertBack(HttpServletResponse resp, String msg) {
 		try {
 			resp.setContentType("text/html;charset=UTF-8");
 			PrintWriter writer = resp.getWriter();

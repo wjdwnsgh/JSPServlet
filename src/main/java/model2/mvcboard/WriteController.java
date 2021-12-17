@@ -44,7 +44,7 @@ public class WriteController extends HttpServlet{
 		// 업로드에 실패한 경우..(파일을 첨부하지 않더라도 객체는 생성된다.)
 		if(mr==null) {
 			// 경고창을 띄우고 쓰기 페이지로 이동
-			JSFunction.alertLodcation(resp, "첨부파일이 제한용량을 초과합니다.",
+			JSFunction.alertLocation(resp, "첨부파일이 제한용량을 초과합니다.",
 					"../mvcboard/write.do");
 			return;
 		}

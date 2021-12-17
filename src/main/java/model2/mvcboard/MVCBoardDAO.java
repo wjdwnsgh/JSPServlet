@@ -132,5 +132,146 @@ public class MVCBoardDAO extends DBConnPool{
 		return result;
 	}
 	
+	// 주어진 일련번호에 해당하는 게시물을 DTO에 담아 반환한다.
+	public MVCBoardDTO selectView(String idx) {
+		MVCBoardDTO dto = new MVCBoardDTO(); // DTO객체 생성
+		String query = "SELECT * FROM mvcboard WHERE idx=?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, idx);
+			rs = psmt.executeQuery();
+			//일련번호는 중복되지 않으므로 if문에서 처리하면 된다.
+			
+			if(rs.next()) { // 결과를 DTO에 저장
+				
+				dto.setIdx(rs.getString(1));
+				dto.setName(rs.getString(2));
+				dto.setTitle(rs.getString(3));
+				dto.setContent(rs.getString(4));
+				dto.setPostdate(rs.getDate(5)); //날짜타입이므로 getDate()사용함
+				dto.setOfile(rs.getString(6));
+				dto.setSfile(rs.getString(7));
+				dto.setDowncount(rs.getInt(8));
+				dto.setPass(rs.getString(9));
+				dto.setVisitcount(rs.getInt(10));
+			}
+		}
+		catch (Exception e) {
+			System.out.println("게시물 상세보기 중 예외발생");
+			e.printStackTrace();
+		}
+		
+		return dto;
+	}
+	
+	// 주어진 일련번호에 해당하는 게시물의 조회수를 1 증가시킨다.
+	public void updateVisitCount(String idx) {
+		// visitcount 컬럼은 number 타입이므로 덧셈이 가능하다.
+		String query = "UPDATE mvcboard SET "
+					 + " visitcount=visitcount+1 "
+					 + " WHERE idx=?";
+		
+		try {
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, idx);
+			psmt.executeQuery();
+		}
+		catch (Exception e) {
+			System.out.println("게시물 조회수 증가 중 예외발생");
+			e.printStackTrace();
+		}
+	}
+	
+	//주어진 일련번호 해당하는 게시물의 다운로드수 증가시킴
+	public void downCountPlus(String idx) {
+		String sql = "UPDATE mvcboard SET "
+				+ " downcount=downcount+1 "
+				+ " WHERE idx=? ";
+		
+		try {
+			psmt = con.prepareStatement(sql);
+			psmt.setString(1, idx);
+			psmt.executeUpdate();
+			
+		}
+		catch (Exception e) {
+			
+		}
+	}
+	
+	//패스워드 검증을 위해 해당 게시물이 존재하는지 확인
+	public boolean confirmPassword(String pass, String idx) {
+		boolean isCorr = true;
+		
+		try {
+			// 패스워드와 일련번호를 통해 조건에 맞는 게시물이 있는지 확인
+			String sql = "SELECT COUNT(*) FROM mvcboard WHERE pass=? AND idx=?";
+			psmt = con.prepareStatement(sql);
+			// 인파라미터 설정
+			psmt.setString(1, pass);
+			psmt.setString(2, idx);
+			rs = psmt.executeQuery();
+			//커서 이동을 위한 next() 호출 count()함수는 항상 결과를 반환하므로
+			// if문은 별도로 필요하지 않다.
+			rs.next();
+			if(rs.getInt(1) == 0) { // 결과가 없을때 flase로 처리
+				isCorr = false;
+			}
+		}
+		catch (Exception e) {
+			isCorr = false; // 예외가 발생하면 확인이 안되므로 false로 처리
+			e.printStackTrace();
+		}
+		
+		return isCorr;
+	}
+	
+	//일련번호에 해당하는 게시물 삭제
+	public int deletePost(String idx) {
+		int result = 0;
+		try {
+			String query = "DELETE FROM mvcboard WHERE idx=?";
+			psmt = con.prepareStatement(query);
+			psmt.setString(1, idx);
+			result = psmt.executeUpdate();
+		}
+		catch (Exception e) {
+			System.out.println("게시물 삭제 중 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	// 일련번호와 패스워드가 일치할때만 
+	public int updatePost(MVCBoardDTO dto) {
+		int result = 0;
+		
+		try {
+			// update를 위한 쿼리문
+			String query = "UPDATE mvcboard"
+						 + " SET title=?, name=?, content=?, ofile=?, sfile=? "
+						 + " WHERE idx=? and pass=?";
+			
+			// prepared객체 생성
+			psmt = con.prepareStatement(query);
+			// 인파라미터 설정
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getName());
+			psmt.setString(3, dto.getContent());
+			psmt.setString(4, dto.getOfile());
+			psmt.setString(5, dto.getSfile());
+			psmt.setString(6, dto.getIdx());
+			psmt.setString(7, dto.getPass());
+			//쿼리 실행
+			result = psmt.executeUpdate();
+		}
+		catch (Exception e) {
+			System.out.println("게시물 수정 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
 	
 }
